@@ -56,8 +56,24 @@ public class Principal {
                 .sorted(Comparator.comparing(Dados::codigo))
                 .forEach(System.out::println);
 
-        
+        System.out.println("\nDigite um trecho do nome do carro a ser buscado: ");
+        var nomeVeiculo = sc.nextLine();
 
+        List<Dados> modelosFiltrados = modeloLista.modelos().stream()
+                .filter(m -> m.nome().toLowerCase().contains(nomeVeiculo.toLowerCase()))
+                .collect(Collectors.toList());
+
+        System.out.println("Modelos filtrados: ");
+        modelosFiltrados.forEach(System.out::println);
+
+        System.out.println("Digite o código do modelo: ");
+        var codigoModelo = sc.nextLine();
+
+        endereco = endereco + "/" + codigoModelo + "/anos";
+        json = consumoAPI.obterDados(endereco);
+        List<Dados> anos = conversor.obterLista(json, Dados.class);
+
+        
 
     }
 
