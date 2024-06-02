@@ -2,9 +2,11 @@ package br.com.alura.consultaFipe.principal;
 
 import br.com.alura.consultaFipe.model.Dados;
 import br.com.alura.consultaFipe.model.Modelos;
+import br.com.alura.consultaFipe.model.Veiculo;
 import br.com.alura.consultaFipe.service.ConsumoAPI;
 import br.com.alura.consultaFipe.service.ConverteDados;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -72,8 +74,18 @@ public class Principal {
         endereco = endereco + "/" + codigoModelo + "/anos";
         json = consumoAPI.obterDados(endereco);
         List<Dados> anos = conversor.obterLista(json, Dados.class);
+        List<Veiculo> veiculos = new ArrayList<>();
 
-        
+        for (int i = 0; i < anos.size(); i++) {
+            var enderecoAnos = endereco + "/" + anos.get(i).codigo();
+            json = consumoAPI.obterDados(enderecoAnos);
+            Veiculo veiculo = conversor.obterDados(json, Veiculo.class);
+            veiculos.add(veiculo);
+        }
+
+        System.out.println("\nTodos os veículos filtrados com avaliações por ano: ");
+        veiculos.forEach(System.out::println);
+
 
     }
 
